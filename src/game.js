@@ -1,45 +1,39 @@
 const canvas = document.getElementById('game');
 const game = canvas.getContext("2d");
-
-window.addEventListener('load',startGame);
-
-function startGame() {
-//  game.fillRect(50,20,55,77);
-//  game.clearRect(0, 0, 100, 100);
-//  console.log(canvas.width, canvas.height);
-//  game.font= "20px sans-serif";
-//  game.fillStyle= "purple";
-//  game.textAlign = "center"; //left|right|
-//  game.fillText("platzi",50,50);
-//  console.log(canvas)
-//  console.log(game)
-
 let canvasSize;
-//Con esta condicion podemos verificar el tamaño de la pantalla y luego agregar un valor especifico al lado de mi cavas, como queremos
-if (window.innerHeight>window.innerWidth){
-    canvasSize = window.innerWidth * 0.9;
-    
-}else{
-    canvasSize = window.innerHeight * 0.7;
-    
+let canvasElement;
+
+//Ahora vamos a sustituir la funcion que se esta llamando, por la de setCanvasSize(), pues asi siempre se va a cargar el juego o el tamaño dependiendo del tamaño de la pagina, y tambien premos llmar otras funciones que se ejecuten, en este caso sera en   mismo juego 
+window.addEventListener('load', setCanvasSize);
+
+window.addEventListener('resize', setCanvasSize)
+
+function setCanvasSize() {
+
+    if (window.innerHeight > window.innerWidth) {
+        canvasSize = window.innerWidth * 0.9;
+
+    } else {
+        canvasSize = window.innerHeight * 0.7;
+
+    }
+    canvas.setAttribute("height", canvasSize)
+    canvas.setAttribute("width", canvasSize)
+    canvasElement = canvasSize / 10;
+    startGame()
 }
-//le agrego las propiedades a mi canvas
-canvas.setAttribute("height", canvasSize)
-canvas.setAttribute("width", canvasSize)
-//como queremos una grilla de 10 x 10
-//voy a definir el tamaño de mi elemento, 10 veces menor que la el tamano original del canvas
-const canvasElement=canvasSize/10;
-//ahora le doy el tamaño del elemento del canvas
-game.font= canvasElement+"px Verdana"
-// y digo que los elementos van a estar ordenados a lado izquierdo del punto
-game.textAlign="end"
-//como un emoji es texto, podemos usar el objeto que teniamos guardado y asi trer lo que queramos, en este caso buscamos el emoji de la bomba
-
-//Entonces como queremos emprimir la bomba más de una vez, usamos un ciclo for
-for(let i=1;i<=10;i++){
-
-    game.fillText(emojis['X'], canvasElement*i, canvasElement)
-}
+function startGame() {
+    const map = maps[0].match(/[IXO\-]+/g)
+    .map(a=>a.split(""))
+    console.log(map)
+    game.font = canvasElement + "px Verdana"
+    game.textAlign = "end"
+    for (let x = 1; x <= 10; x++) {
+        for (let y = 1; y <= 10; y++) {
+            game.fillText(emojis[map[x-1][y-1]], canvasElement*y, canvasElement*x)
+        }
+    }
 
 
 }
+// Cree una funcion donde simplemente estamos empaquetando los tamaños de nuestro canvas 
